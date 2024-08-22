@@ -12,7 +12,12 @@
 amount_prepared <- 150  ## How much volume [ul] have you actually prepared when loading tips (Sample amount + Buffer A as diluent)
 sample_taken <- 3      ## How much digest did you take per sample [ul] 
 amount_loaded <- 100    ## How much volume of the prepared dilution did you load onto the tips
-# More interaction needed in line 77-85
+
+# Specify the path to the directory containing the raw files, the results will be saved in the same folder
+# default is ".", same directory as this script/R project
+Path = "."
+
+# More interaction needed in line 82-89
 
 
 # Check if  Package 'rawDiag' needs installation
@@ -33,7 +38,7 @@ library("data.table")
 library("ggplot2")
 
 # Select all the Files that are the HELA standard in the Path, if your Raw File naming is not consistent this needs to be adjusted
-filenames <- list.files(path=".", full.names = T)
+filenames <- list.files(path=Path, full.names = T)
 standardFiles <- filenames[grepl("Standard",filenames, ignore.case = T )&grepl(".raw",filenames)]
 
 
@@ -147,14 +152,14 @@ Results$`Total [ul]` <- 220
 
 
 # write the Results and pipetting scheme as a txt  
-fwrite(Results,file = "./TIC_Norm_Results.txt", sep="\t")
+fwrite(Results,file = file.path(Path,"TIC_Norm_Results.txt"), sep="\t")
 
 
 
 
 ### ------------------------------------------------------------------------------------------------------------------------------------------------
 ### make a PDF with the calibration curve, regression line and min and max values and all TIC chromatograms of all samples to check quality manually
-pdf(file="./Regression and chromatograms.pdf",width=20, height=10)
+pdf(file=file.path(Path, "Regression and chromatograms.pdf"),width=20, height=10)
 
 
 # plot the final calibration curve with values of the linear regression 
